@@ -12,9 +12,10 @@ spec:
       labels:
         app.kubernetes.io/name: vuln-ping
     spec:
+      serviceAccountName: developer-steve
       containers:
       - name: vuln-ping
-        image: 
+        image: biltisberger/vuln-ping:latest
         ports:
         - containerPort: 1338
           protocol: TCP

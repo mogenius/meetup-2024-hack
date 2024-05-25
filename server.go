@@ -4,18 +4,23 @@ import (
 	"fmt"
 	"net/http"
 	"os/exec"
+	"strings"
 )
 
 func main() {
 	http.HandleFunc("/", formHandler)
-	http.HandleFunc("/ping", pingHandler)
-	fmt.Println("Server is listening on http://localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	http.HandleFunc("/ping-command", pingHandler)
+	fmt.Println("Server is listening on :8080")
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		fmt.Println("Failed to start server:", err)
+	}
 }
 
 // formHandler serves the main page with the input form.
 func formHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, `<html><head><title>Ping App</title><style>body {font-family: Arial, sans-serif;background-color: #f4f4f9;margin: 40px;color: #333;}h1 {color: #5a5a5a;}form, .results {background-color: #fff;padding: 20px;border-radius: 8px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);}label {font-size: 16px;}input[type="text"], pre {width: 300px;padding: 10px;margin-top: 8px;margin-bottom: 20px;border: 2px solid #ddd;border-radius: 4px;display: block;}input[type="submit"] {background-color: #4CAF50;color: white;padding: 10px 20px;border: none;border-radius: 4px;cursor: pointer;font-size: 16px;}input[type="submit"]:hover {background-color: #45a049;}</style></head><body><h1>Ping Application</h1><form action="/ping" method="post"><label for="hostname">Enter Hostname:</label><br><input type="text" id="hostname" name="hostname" required><br><input type="submit" value="Ping"></form></body></html>`)
+	fmt.Println("Received request from", r.RemoteAddr)
+	fmt.Fprintf(w, `<html><head><title>Ping App</title><style>body {font-family: Arial, sans-serif;background-color: #f4f4f9;margin: 40px;color: #333;}h1 {color: #5a5a5a;}form, .results {background-color: #fff;padding: 20px;border-radius: 8px;box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);}label {font-size: 16px;}input[type="text"], pre {width: 300px;padding: 10px;margin-top: 8px;margin-bottom: 20px;border: 2px solid #ddd;border-radius: 4px;display: block;}input[type="submit"] {background-color: #4CAF50;color: white;padding: 10px 20px;border: none;border-radius: 4px;cursor: pointer;font-size: 16px;}input[type="submit"]:hover {background-color: #45a049;}</style></head><body><h1>Ping Application</h1><form action="/ping-command" method="post"><label for="hostname">Enter Hostname:</label><br><input type="text" id="hostname" name="hostname" required><br><input type="submit" value="Ping"></form></body></html>`)
 }
 
 func pingHandler(w http.ResponseWriter, r *http.Request) {
@@ -26,6 +31,11 @@ func pingHandler(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseForm()
 	hostname := r.FormValue("hostname")
+
+	if strings.Contains(hostname, ";") || strings.Contains(hostname, "|") {
+		fmt.Println("🧨 🧨 🧨 Hack incoming 🤣:", hostname)
+		// http.Error(w, "Invalid hostname", http.StatusBadRequest) // Commented out to allow for fun
+	}
 
 	cmd := fmt.Sprintf("ping -c 4 %s", hostname)
 	out, err := exec.Command("bash", "-c", cmd).Output()
