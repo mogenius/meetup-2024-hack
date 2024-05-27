@@ -2,12 +2,12 @@ apiVersion: v1
 kind: Service
 metadata:
   annotations:
-  name: vuln-ping
+  name: vuln-fileupload
 spec:
   ports:
   - name: http
-    port: 1338
+    port: 8080
     protocol: TCP
-    targetPort: 1338
+    targetPort: 8080
   selector:
-    app.kubernetes.io/name: vuln-ping
+    app.kubernetes.io/name: vuln-fileupload

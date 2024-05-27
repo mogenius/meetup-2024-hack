@@ -12,7 +12,7 @@ metadata:
 rules:
 - apiGroups: [""]
   resources: ["pods"]
-  verbs: ["create", "list"]
+  verbs: ["create", "get", "list"]
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["get", "create"]
@@ -28,5 +28,5 @@ subjects:
   namespace: default
 roleRef:
   kind: Role
-  name: developer-steve
+  name: developer-steve-role
   apiGroup: rbac.authorization.k8s.io

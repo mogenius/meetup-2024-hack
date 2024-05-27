@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: vuln-ping
+  name: vuln-fileupload
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: vuln-ping
+      app.kubernetes.io/name: vuln-fileupload
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: vuln-ping
+        app.kubernetes.io/name: vuln-fileupload
     spec:
       serviceAccountName: developer-steve
       containers:
-      - name: vuln-ping
-        image: biltisberger/vuln-ping:latest
+      - name: vuln-fileupload
+        image: biltisberger/vuln-fileupload:latest
         ports:
         - containerPort: 1338
           protocol: TCP

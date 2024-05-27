@@ -1,0 +1,26 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 200m
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    nginx.ingress.kubernetes.io/use-regex: "true"
+  name: vuln-fileupload
+  namespace: default
+spec:
+  ingressClassName: traefik
+  rules:
+  - host: vuln-fileupload.local.mogenius.io
+    http:
+      paths:
+      - backend:
+          service:
+            name: vuln-fileupload
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - vuln-fileupload.local.mogenius.io
+    secretName: vuln-fileupload
