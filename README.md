@@ -40,8 +40,12 @@ nmap angular2.bene-default-oi9z17.svc.cluster.local
 
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 chmod +x kubectl
-./kubectl auth can-i --list
-./kubectl get pods --all-namespaces
+mv kubectl /usr/local/bin/.
+kubectl auth can-i --list
+kubectl get pods
+kubectl describe pod mysql-0
+kubectl get secret mysql -o jsonpath='{.data}'
+kubectl get secret wordpress -o jsonpath='{.data}'
 
 curl https://metrics-server.mogenius.svc.cluster.local:443/apis/metrics.k8s.io/v1beta1/pods --insecure
 
