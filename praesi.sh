@@ -1,6 +1,6 @@
 #!/bin/bash
 
-// make sure no open reverse shell is running
+# make sure no open reverse shell is running
 kubectl rollout restart deployment vuln-fileupload
 sleep 1
 
@@ -235,8 +235,8 @@ echo "       -  use non-default namespaces"
 echo "       -  use network policies"
 echo "       -  setup SecurityContexts"
 echo "       -  run slim-containers, use distroless, remove all shells"
-echo "       -  monitor your system"
 echo "       -  limit user capabilities"
+echo "       -  use WAFs (but dont rely on them)"
 read -p ""
 echo "   📚  try to understand what you are doing in kubernetes"
 read -p ""
@@ -253,7 +253,6 @@ echo "      🔒     1. Keep improving your security."
 echo "      😊     2. Always stay humble."
 
 
-read -p ""
 echo ""
 echo ""
 echo ""
@@ -277,5 +276,3 @@ echo -e "Github:  https://github.com/mogenius/meetup-2024-hack"
 echo ""
 echo ""
 echo ""
-
-read -p ""
